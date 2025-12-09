@@ -1,5 +1,3 @@
-from typing import Optional
-
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
 from hdx.utilities.retriever import Retrieve

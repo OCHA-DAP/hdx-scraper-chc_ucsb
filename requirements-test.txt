@@ -60,11 +60,11 @@ ckanapi==4.9
     # via
     #   -c requirements.txt
     #   hdx-python-api
-click==8.3.0
+click==8.3.1
     # via
     #   -c requirements.txt
     #   typer
-coverage==7.11.3
+coverage==7.12.0
     # via pytest-cov
 defopt==7.0.0
     # via
@@ -100,7 +100,7 @@ frozenlist==1.8.0
     #   -c requirements.txt
     #   aiohttp
     #   aiosignal
-hdx-python-api==6.5.3
+hdx-python-api==6.5.4
     # via
     #   -c requirements.txt
     #   hdx-scraper-chc-ucsb (pyproject.toml)
@@ -314,7 +314,7 @@ rich==14.2.0
     # via
     #   -c requirements.txt
     #   typer
-rpds-py==0.28.0
+rpds-py==0.29.0
     # via
     #   -c requirements.txt
     #   jsonschema
@@ -323,7 +323,7 @@ ruamel-yaml==0.18.16
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-ruamel-yaml-clib==0.2.14
+ruamel-yaml-clib==0.2.15
     # via
     #   -c requirements.txt
     #   ruamel-yaml
