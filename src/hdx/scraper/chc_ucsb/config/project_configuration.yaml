@@ -1,26 +1,20 @@
 # Collector specific configuration
-boundaries:
-  dataset: "unmap-international-boundaries-geojson"
-  resource_adm0: "wrl_polbnda_int_15m_uncs.geojson"
-  resource_adm1: "polbnda_adm1_1m_ocha.geojson"
-  resource_adm2: "polbnda_adm2_1m_ocha.geojson"
-
 base_url: "reflection.grit.ucsb.edu::CHC_CMIP6/extremes/Tmax"
-base_file: "Daily_Tmax_{year}_{month}_{product}.csv"
+base_file: "Daily_Tmax_{product}_{month}"
 
 start_year: 1983
 end_year: 2016
 
 scenarios:
-  - "observations"
   - "2030_SSP245"
   - "2050_SSP245"
   - "2030_SSP585"
   - "2050_SSP585"
+  - "observations"
 
 products:
-  - "monthly_mean"
   - "cnt_Tmaxgt30C"
   - "cnt_Tmaxgt40p6C"
   - "cnt_Tmaxgt95"
   - "cnt_Tmaxgt99"
+  - "monthly_mean"

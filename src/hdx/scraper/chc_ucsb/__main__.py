@@ -9,6 +9,7 @@ import logging
 from os.path import expanduser, join
 
 from hdx.api.configuration import Configuration
+from hdx.data.resource import Resource
 from hdx.data.user import User
 from hdx.facades.infer_arguments import facade
 from hdx.utilities.downloader import Download
@@ -19,9 +20,8 @@ from hdx.utilities.path import (
 from hdx.utilities.retriever import Retrieve
 
 from hdx.scraper.chc_ucsb._version import __version__
-from hdx.scraper.chc_ucsb.boundaries import get_boundaries
 from hdx.scraper.chc_ucsb.pipeline import Pipeline
-from hdx.scraper.chc_ucsb.zonalstats import ZonalStats
+from hdx.scraper.chc_ucsb.tiff_download import TIFFDownload
 
 # setup_logging("DEBUG")
 logger = logging.getLogger(__name__)
@@ -29,6 +29,10 @@ logger = logging.getLogger(__name__)
 _LOOKUP = "hdx-scraper-chc_ucsb"
 _SAVED_DATA_DIR = "saved_data"  # Keep in repo to avoid deletion in /tmp
 _UPDATED_BY_SCRIPT = "HDX Scraper: CHC UCSB"
+
+
+def create_resource_in_hdx(resource: Resource) -> None:
+    resource.create_in_hdx()
 
 
 def main(
@@ -59,9 +63,8 @@ def main(
                 save=save,
                 use_saved=use_saved,
             )
-            boundaries = get_boundaries(configuration, retriever)
-            zonal_stats = ZonalStats(configuration, boundaries, tempdir)
-            pipeline = Pipeline(zonal_stats, configuration, retriever, tempdir)
+            tiff_download = TIFFDownload(configuration, tempdir)
+            pipeline = Pipeline(tiff_download, configuration, retriever, tempdir)
 
             for scenario in configuration["scenarios"]:
                 dataset = pipeline.generate_dataset(scenario)
@@ -71,17 +74,19 @@ def main(
                     )
                 )
                 dataset.create_in_hdx(
-                    remove_additional_resources=True,
-                    match_resource_order=False,
+                    allow_no_resources=True,
                     hxl_update=False,
                     updated_by_script=_UPDATED_BY_SCRIPT,
                     batch=info["batch"],
                 )
+                dataset_id = dataset["id"]
+                pipeline.add_resources(dataset_id, scenario, create_resource_in_hdx)
 
 
 if __name__ == "__main__":
     facade(
         main,
+        hdx_site="feature",
         user_agent_config_yaml=join(expanduser("~"), ".useragents.yaml"),
         user_agent_lookup=_LOOKUP,
         project_config_yaml=script_dir_plus_file(
