@@ -258,7 +258,10 @@ pyphonetics==0.5.3
 pytest==9.0.2
     # via
     #   hdx-scraper-chc-ucsb (pyproject.toml)
+    #   pytest-asyncio
     #   pytest-cov
+pytest-asyncio==1.3.0
+    # via hdx-scraper-chc-ucsb (pyproject.toml)
 pytest-cov==7.0.0
     # via hdx-scraper-chc-ucsb (pyproject.toml)
 python-dateutil==2.9.0.post0

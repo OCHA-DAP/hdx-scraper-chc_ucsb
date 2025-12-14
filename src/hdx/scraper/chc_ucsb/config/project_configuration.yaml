@@ -10,7 +10,6 @@ scenarios:
   - "2050_SSP245"
   - "2030_SSP585"
   - "2050_SSP585"
-  - "observations"
 
 products:
   - "cnt_Tmaxgt30C"
