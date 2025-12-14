@@ -3,9 +3,10 @@
 
 import calendar
 import logging
+from os import remove
 from pathlib import Path
 from shutil import make_archive, rmtree
-from typing import Callable, Optional
+from typing import Callable, Optional, Tuple
 
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
@@ -35,7 +36,7 @@ class Pipeline:
 
     def generate_resource(
         self, scenario_path: Path, scenario: str, product: str, month: int
-    ) -> Resource:
+    ) -> Tuple[Resource, str]:
         month_str = f"{month:02d}"
         filename = self._base_file.format(product=product, month=month_str)
         logger.info(f"Generating resource with {filename}.zip")
@@ -56,9 +57,8 @@ class Pipeline:
         )
         resource.set_format("zipped geotiff")
         resource.set_file_to_upload(zip_path)
-        if tif_directory:
-            rmtree(tif_directory)
-        return resource
+        rmtree(tif_directory)
+        return resource, zip_path
 
     def generate_dataset(self, scenario: str) -> Optional[Dataset]:
         start_year = self._configuration["start_year"]
@@ -91,8 +91,9 @@ class Pipeline:
         scenario_path.mkdir(exist_ok=True)
         for product in self._configuration["products"]:
             for month in range(1, 13):
-                resource = self.generate_resource(
+                resource, zip_path = self.generate_resource(
                     scenario_path, scenario, product, month
                 )
                 resource["package_id"] = dataset_id
                 create_resource_in_hdx(resource)
+                remove(zip_path)
