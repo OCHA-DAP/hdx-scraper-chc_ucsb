@@ -1,0 +1,17 @@
+license_id: cc-by
+methodology: Other
+methodology_other: More information is available [here](https://data.chc.ucsb.edu/products/CHC_CMIP6/Data_Descriptor_CHC_CMIP6_climate_projection_dataset.pdf)
+caveats:
+dataset_source: Climate Hazard Center (CHC) (UC Santa Barbara)
+package_creator: HDX Data Systems Team
+private: False
+maintainer: 196196be-6037-4488-8b71-d786adf4c081
+owner_org:  6e30eb6d-52f9-49de-b2cd-2d68fced05c5
+data_update_frequency: -1
+notes: |
+  This CHC-CMIP6 observational and projection dataset offers zonal statistics computed
+  from high-resolution (0.05°) hydro-climatic maximum temperature (Tmax) data for the
+  current/observed period (1983-2016) and near-future scenarios (2030 and 2050).
+  It also presents zonal statistics based off counts of Tmax ‘extremes’ for the
+  observations dataset and each of the scenarios. For the original high resolution tif
+  files from which this dataset was calculated, please see...

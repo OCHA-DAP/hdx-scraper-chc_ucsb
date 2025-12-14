@@ -1,0 +1,19 @@
+# Collector specific configuration
+base_url: "reflection.grit.ucsb.edu::CHC_CMIP6/extremes/Tmax"
+base_file: "Daily_Tmax_{product}_{month}"
+
+start_year: 1983
+end_year: 2016
+
+scenarios:
+  - "2030_SSP245"
+  - "2050_SSP245"
+  - "2030_SSP585"
+  - "2050_SSP585"
+
+products:
+  - "cnt_Tmaxgt30C"
+  - "cnt_Tmaxgt40p6C"
+  - "cnt_Tmaxgt95"
+  - "cnt_Tmaxgt99"
+  - "monthly_mean"
