@@ -15,9 +15,6 @@ dependencies = [
   "hdx-python-api>= 6.5.4",
   "hdx-python-country>= 3.9.8",
   "hdx-python-utilities>= 3.9.5",
-  "aiohttp[speedups]",
-  "aiolimiter",
-  "tqdm",
 ]
 
 dynamic = ["version"]
