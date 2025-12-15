@@ -74,6 +74,7 @@ def main(
                     )
                 )
                 dataset.create_in_hdx(
+                    remove_additional_resources=True,
                     allow_no_resources=True,
                     hxl_update=False,
                     updated_by_script=_UPDATED_BY_SCRIPT,
