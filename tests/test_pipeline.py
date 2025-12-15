@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import pytest
+from hdx.data.dataset import Dataset
 from hdx.data.resource import Resource
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
@@ -24,6 +25,14 @@ class TestPipeline:
         return MyTIFFDownload
 
     @pytest.fixture(scope="class")
+    def create_dataset_in_hdx(self):
+        def my_create_dataset_in_hdx(dataset: Dataset):
+            self.actual_resources.append(dataset.get_resource())
+            return "1234"
+
+        return my_create_dataset_in_hdx
+
+    @pytest.fixture(scope="class")
     def create_resource_in_hdx(self):
         def my_create_resource_in_hdx(resource: Resource):
             self.actual_resources.append(resource)
@@ -37,6 +46,7 @@ class TestPipeline:
         input_dir,
         config_dir,
         my_tiff_download,
+        create_dataset_in_hdx,
         create_resource_in_hdx,
     ):
         with temp_dir(
@@ -65,14 +75,17 @@ class TestPipeline:
                     "subnational": "0",
                     "title": "CHC-CMIP6 TMax Extremes per Country for 2030_SSP245",
                 }
-                pipeline.add_resources("1234", scenario, create_resource_in_hdx)
+                pipeline.add_resources(
+                    dataset, scenario, create_dataset_in_hdx, create_resource_in_hdx
+                )
                 assert self.actual_resources == [
+                    # First resource won't have package id as it is added to dataset
+                    # directly and created when the dataset is created
                     {
                         "description": "CHC-CMIP6 TMax Extremes per Country for cnt_Tmaxgt30C in "
                         "January",
                         "format": "geotiff",
                         "name": "Daily_Tmax_cnt_Tmaxgt30C_01",
-                        "package_id": "1234",
                     },
                     {
                         "description": "CHC-CMIP6 TMax Extremes per Country for cnt_Tmaxgt30C in "

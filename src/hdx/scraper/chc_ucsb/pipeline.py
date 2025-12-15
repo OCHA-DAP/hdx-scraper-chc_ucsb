@@ -83,17 +83,30 @@ class Pipeline:
 
     def add_resources(
         self,
-        dataset_id: str,
+        dataset: Dataset,
         scenario: str,
+        create_dataset_in_hdx: Callable[[Dataset], str],
         create_resource_in_hdx: Callable[[Resource], None],
     ) -> None:
         scenario_path = Path(self._tempdir, scenario)
         scenario_path.mkdir(exist_ok=True)
-        for product in self._configuration["products"]:
+        product = self._configuration["products"][0]
+        resource, zip_path = self.generate_resource(scenario_path, scenario, product, 1)
+        dataset.add_update_resource(resource)
+        dataset_id = create_dataset_in_hdx(dataset)
+        remove(zip_path)
+
+        def add_resource(product: str, month: int) -> None:
+            resource, zip_path = self.generate_resource(
+                scenario_path, scenario, product, month
+            )
+            resource["package_id"] = dataset_id
+            create_resource_in_hdx(resource)
+            remove(zip_path)
+
+        for month in range(2, 13):
+            add_resource(product, month)
+
+        for product in self._configuration["products"][1:]:
             for month in range(1, 13):
-                resource, zip_path = self.generate_resource(
-                    scenario_path, scenario, product, month
-                )
-                resource["package_id"] = dataset_id
-                create_resource_in_hdx(resource)
-                remove(zip_path)
+                add_resource(product, month)

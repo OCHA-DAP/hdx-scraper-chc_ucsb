@@ -9,6 +9,7 @@ import logging
 from os.path import expanduser, join
 
 from hdx.api.configuration import Configuration
+from hdx.data.dataset import Dataset
 from hdx.data.resource import Resource
 from hdx.data.user import User
 from hdx.facades.infer_arguments import facade
@@ -53,6 +54,16 @@ def main(
     User.check_current_user_write_access("6e30eb6d-52f9-49de-b2cd-2d68fced05c5")
 
     with wheretostart_tempdir_batch(folder=_LOOKUP) as info:
+
+        def create_dataset_in_hdx(dataset: Dataset) -> str:
+            dataset.create_in_hdx(
+                remove_additional_resources=True,
+                hxl_update=False,
+                updated_by_script=_UPDATED_BY_SCRIPT,
+                batch=info["batch"],
+            )
+            return dataset["id"]
+
         tempdir = info["folder"]
         with Download() as downloader:
             retriever = Retrieve(
@@ -73,15 +84,9 @@ def main(
                         join("config", "hdx_dataset_static.yaml"), main
                     )
                 )
-                dataset.create_in_hdx(
-                    remove_additional_resources=True,
-                    allow_no_resources=True,
-                    hxl_update=False,
-                    updated_by_script=_UPDATED_BY_SCRIPT,
-                    batch=info["batch"],
+                pipeline.add_resources(
+                    dataset, scenario, create_dataset_in_hdx, create_resource_in_hdx
                 )
-                dataset_id = dataset["id"]
-                pipeline.add_resources(dataset_id, scenario, create_resource_in_hdx)
 
 
 if __name__ == "__main__":
