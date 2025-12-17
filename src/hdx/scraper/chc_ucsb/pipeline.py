@@ -7,6 +7,7 @@ import os
 import subprocess
 from os import remove
 from pathlib import Path
+from shutil import rmtree
 from typing import Callable, List, Optional, Tuple
 
 from deterministic_zip_go import exec
@@ -76,7 +77,7 @@ class Pipeline:
         )
         resource.set_format("zipped geotiff")
         resource.set_file_to_upload(zip_path)
-        # rmtree(tif_directory)
+        rmtree(tif_directory)
         return resource, zip_path
 
     def generate_dataset(self, scenario: str) -> Optional[Dataset]:
