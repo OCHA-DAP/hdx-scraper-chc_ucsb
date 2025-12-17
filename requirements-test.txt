@@ -269,7 +269,7 @@ rpds-py==0.30.0
     #   -c requirements.txt
     #   jsonschema
     #   referencing
-ruamel-yaml==0.18.16
+ruamel-yaml==0.18.17
     # via
     #   -c requirements.txt
     #   hdx-python-utilities

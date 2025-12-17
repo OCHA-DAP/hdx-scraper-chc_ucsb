@@ -41,9 +41,8 @@ class Pipeline:
         # Ensure absolute path for the output zip
         abs_zip_path = os.path.abspath(zip_path)
 
-        # 2. Run deterministic-zip
-        # We use cwd=tif_directory and zip "." to match shutil's behavior
-        # of zipping the contents at the root of the archive.
+        # Run deterministic-zip sing cwd=tif_directory and zip "." to match shutil's
+        # behavior of zipping the contents at the root of the archive
         process = exec.create_subprocess(
             ["-r", abs_zip_path, "."],
             cwd=tif_directory,
