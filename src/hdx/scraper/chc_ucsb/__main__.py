@@ -92,7 +92,7 @@ def main(
                     r for r in dataset.get_resources() if r["id"] in resource_ids
                 ]
                 dataset.init_resources()
-                dataset.add_update_resources(new_resources)
+                dataset.add_update_resources(new_resources, ignore_datasetid=True)
                 dataset.create_in_hdx(
                     remove_additional_resources=True,
                     hxl_update=False,
