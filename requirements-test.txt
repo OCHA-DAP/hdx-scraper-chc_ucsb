@@ -37,6 +37,10 @@ defopt==7.0.0
     # via
     #   -c requirements.txt
     #   hdx-python-api
+deterministic-zip-go==5.2.0
+    # via
+    #   -c requirements.txt
+    #   hdx-scraper-chc-ucsb (pyproject.toml)
 dnspython==2.8.0
     # via
     #   -c requirements.txt
@@ -62,7 +66,7 @@ frictionless==5.18.1
     # via
     #   -c requirements.txt
     #   hdx-python-utilities
-hdx-python-api==6.5.4
+hdx-python-api==6.5.5
     # via
     #   -c requirements.txt
     #   hdx-scraper-chc-ucsb (pyproject.toml)
@@ -71,7 +75,7 @@ hdx-python-country==3.9.8
     #   -c requirements.txt
     #   hdx-scraper-chc-ucsb (pyproject.toml)
     #   hdx-python-api
-hdx-python-utilities==3.9.5
+hdx-python-utilities==3.9.6
     # via
     #   -c requirements.txt
     #   hdx-scraper-chc-ucsb (pyproject.toml)

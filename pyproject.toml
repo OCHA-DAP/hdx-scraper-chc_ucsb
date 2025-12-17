@@ -12,9 +12,10 @@ build-backend = "hatchling.build"
 name = "hdx-scraper-chc_ucsb"
 requires-python = ">=3.13"
 dependencies = [
-  "hdx-python-api>= 6.5.4",
+  "hdx-python-api>= 6.5.5",
   "hdx-python-country>= 3.9.8",
   "hdx-python-utilities>= 3.9.5",
+  "deterministic-zip-go",
 ]
 
 dynamic = ["version"]

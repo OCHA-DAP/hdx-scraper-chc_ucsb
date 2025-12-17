@@ -4,26 +4,11 @@ from pathlib import Path
 from timeit import default_timer as timer
 from typing import List
 
-from hdx.api.configuration import Configuration
-
 logger = logging.getLogger(__name__)
 
 
 class TIFFDownload:
     """TIFFDownload class"""
-
-    def __init__(
-        self,
-        configuration: Configuration,
-        tempdir: str,
-    ) -> None:
-        self._tempdir = tempdir
-
-        self._user_agent = configuration.get_user_agent()
-        self._base_url = configuration["base_url"]
-        self._base_file = configuration["base_file"]
-        self._start_year = configuration["start_year"]
-        self._end_year = configuration["end_year"]
 
     async def run_rsync(
         self, source: str, tif_directory: Path, include: str

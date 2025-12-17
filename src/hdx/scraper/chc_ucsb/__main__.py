@@ -32,8 +32,9 @@ _SAVED_DATA_DIR = "saved_data"  # Keep in repo to avoid deletion in /tmp
 _UPDATED_BY_SCRIPT = "HDX Scraper: CHC UCSB"
 
 
-def create_resource_in_hdx(resource: Resource) -> None:
-    resource.create_in_hdx()
+def create_resource_in_hdx(resource: Resource, dataset: Dataset) -> Resource:
+    resource.create_in_hdx(dataset=dataset)
+    return resource
 
 
 def main(
@@ -55,14 +56,13 @@ def main(
 
     with wheretostart_tempdir_batch(folder=_LOOKUP) as info:
 
-        def create_dataset_in_hdx(dataset: Dataset) -> str:
+        def create_dataset_in_hdx(dataset: Dataset) -> Dataset:
             dataset.create_in_hdx(
-                remove_additional_resources=True,
                 hxl_update=False,
                 updated_by_script=_UPDATED_BY_SCRIPT,
                 batch=info["batch"],
             )
-            return dataset["id"]
+            return dataset
 
         tempdir = info["folder"]
         with Download() as downloader:
@@ -74,7 +74,7 @@ def main(
                 save=save,
                 use_saved=use_saved,
             )
-            tiff_download = TIFFDownload(configuration, tempdir)
+            tiff_download = TIFFDownload()
             pipeline = Pipeline(tiff_download, configuration, retriever, tempdir)
 
             for scenario in configuration["scenarios"]:
@@ -84,8 +84,20 @@ def main(
                         join("config", "hdx_dataset_static.yaml"), main
                     )
                 )
-                pipeline.add_resources(
+                resource_ids = pipeline.add_resources(
                     dataset, scenario, create_dataset_in_hdx, create_resource_in_hdx
+                )
+                dataset = Dataset.read_from_hdx(dataset["name"])
+                new_resources = [
+                    r for r in dataset.get_resources() if r["id"] in resource_ids
+                ]
+                dataset.init_resources()
+                dataset.add_update_resources(new_resources)
+                dataset.create_in_hdx(
+                    remove_additional_resources=True,
+                    hxl_update=False,
+                    updated_by_script=_UPDATED_BY_SCRIPT,
+                    batch=info["batch"],
                 )
 
 
